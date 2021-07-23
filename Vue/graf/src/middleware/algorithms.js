@@ -77,7 +77,7 @@ class helperAlgs {
             if(links[edge].type === "Directed") {
                 weight_first = parseInt(weight);
             } else {
-                if (weight.indexOf("/") === -1) {
+                if (typeof(weight) === "number" || weight.indexOf("/") === -1) {
                     console.log("Undirected and bidirected edges must have \"/\" in their weight!");
                     return -1;
                 }
