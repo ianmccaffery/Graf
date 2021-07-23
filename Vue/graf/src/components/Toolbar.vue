@@ -102,6 +102,7 @@ export default{
         "Algorithm" : {
           "bfs" : "BFS Search",
           "dijkstra" : "Dijkstra",
+          "maxFlow" : "Maximum Flow",
         }
       },
       subMenuActive: {

@@ -59,47 +59,81 @@ class helperAlgs {
 
     maxFlow(selectedNodes, links) {
         console.log("***** IN maxFlow *****");
-
         console.log("Starting node is " + selectedNodes[0].index);
 
         // ***** MODIFIED "convertGrafData" CODE *****
         var data = {};
+        var flow_graph = {};
+        var maxf = 0;
         for(let edge in links) {
             var lNode = links[edge].sid; // source node id
             var rNode = links[edge].tid; // target node id
             
             // TODO: Error checking to ensure links[edge].name is a POSITIVE INTEGER
-            var weight = parseInt(links[edge].name); // edge weight int
+            var weight = links[edge].name;
+            var weight_first;
+            var weight_second;
 
             if(links[edge].type === "Directed") {
-                if(lNode in data) {
-                    data[lNode][rNode] = weight;
-                } else {
-                    data[lNode] = {}; // initialize an empty object
-                    data[lNode][rNode] = weight;
+                weight_first = parseInt(weight);
+            } else {
+                if (weight.indexOf("/") === -1) {
+                    console.log("Undirected and bidirected edges must have \"/\" in their weight!");
+                    return -1;
                 }
+
+                weight_first = parseInt(weight.slice(0, weight.indexOf("/")));
+                weight_second = parseInt(weight.slice(weight.indexOf("/") + 1));
+            }
+
+            if (weight_first < 1 || isNaN(weight_first)) {
+                // ERROR!
+                console.log("First weight value is invalid!");
+                return -1;
+            }
+
+            if(lNode in data) {
+                data[lNode][rNode] = weight_first;
+
+                flow_graph[lNode][rNode] = 0;
+            } else {
+                data[lNode] = {};
+                data[lNode][rNode] = weight_first;
+
+                flow_graph[lNode] = {};
+                flow_graph[lNode][rNode] = 0;
+            }
+
+            if(links[edge].type === "Directed") {
                 if(!(rNode in data)) {
-                    data[rNode] = {}; // initialize an empty object
+                    data[rNode] = {};
+
+                    flow_graph[rNode] = {};
                 }
             } else {
                 // TREAT UNDIRECTED AND BIDIRECTED EDGES THE SAME WAY
                 
                 // if there is a bidirected or undirected edge ...
-                // from A to B with weight w, then there is a directed edge ...
-                // from A to B with weight w AND a directed edge ...
-                // from B to A with weight w.
-                if(lNode in data) {
-                    data[lNode][rNode] = weight;
-                } else {
-                    data[lNode] = {}; // initialize an empty object
-                    data[lNode][rNode] = weight;
+                // from A to B with weight_first w, then there is a directed edge ...
+                // from A to B with weight_first w AND a directed edge ...
+                // from B to A with weight_first w.
+
+                if (weight_second < 1 || isNaN(weight_second)) {
+                    // ERROR!
+                    console.log("Second weight value is invalid!");
+                    return -1;
                 }
 
                 if(rNode in data) {
-                    data[rNode][lNode] = weight;
+                    data[rNode][lNode] = weight_second;
+
+                    flow_graph[rNode][lNode] = 0;
                 } else {
-                    data[rNode] = {}; // initialize an empty object
-                    data[rNode][lNode] = weight;
+                    data[rNode] = {};
+                    data[rNode][lNode] = weight_second;
+
+                    flow_graph[rNode] = {};
+                    flow_graph[rNode][lNode] = 0;
                 }
             }
         }
@@ -120,11 +154,13 @@ class helperAlgs {
                     bottleneck = residual[node1][node2];
                 }
             }
+            maxf += bottleneck;
             for(let n = 0; n < path.length - 1; n++) {
                 node1 = path[n];
                 node2 = path[n + 1];
                 residual[node1][node2] -= bottleneck;
-                if(residual[node1][node2] == 0) {
+                flow_graph[node1][node2] += bottleneck;
+                if(residual[node1][node2] === 0) {
                     delete residual[node1][node2];
                 }
                 if(node2 in residual) {
@@ -148,15 +184,7 @@ class helperAlgs {
         console.log("Final graph is...");
         console.log(data);
 
-        var source = selectedNodes[0].index;
-        var maxf = 0;
-        for(let n in residual) {
-            if(source in residual[n]) {
-                maxf += residual[n][source];
-            }
-        }
-        console.log("Maximum flow is " + maxf);
-        return maxf;
+        return [flow_graph, maxf]; // return multiple values as an array
     }
 }
 

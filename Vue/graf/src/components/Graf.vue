@@ -339,6 +339,7 @@ export default {
     },
     clear_selections(){
         PathTools.update_distances(this.graf, null, false);
+        PathTools.update_flow(this.graf, null, false);
         GrafTools.clear_selection(this.graf, this.selection);
     },
     keyup_handler(event) {
