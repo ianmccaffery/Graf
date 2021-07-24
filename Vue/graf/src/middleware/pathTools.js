@@ -37,13 +37,13 @@ class PathTools {
         this.update_flow(graf, data, false);
         var data = alg(Array.from(selection.selectedNodes), graf.links);
         if (data == -1) {
-          console.log("Maximum flow algorithm ABORTED!");
+          alert("Maximum flow algorithm ABORTED!");
           return;
         }
         var colored = this.update_flow(graf, data[0], true);
         grafhelpers.color_graf(graf, 'red', 'node', colored[0]);
         grafhelpers.color_graf(graf, 'red', 'edge', colored[1]);
-        console.log("Maximum flow is " + data[1]);
+        alert("Maximum flow is " + data[1]);
     }
 
     match_ids_to_graf(graf, selection) {

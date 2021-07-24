@@ -60,7 +60,8 @@ class helperAlgs {
     maxFlow(selectedNodes, links) {
         console.log("***** IN maxFlow *****");
         console.log("Starting node is " + selectedNodes[0].index);
-
+        console.log("Ending node is " + selectedNodes[1].index);
+        
         // ***** MODIFIED "convertGrafData" CODE *****
         var data = {};
         var flow_graph = {};
@@ -77,8 +78,20 @@ class helperAlgs {
             if(links[edge].type === "Directed") {
                 weight_first = parseInt(weight);
             } else {
-                if (typeof(weight) === "number" || weight.indexOf("/") === -1) {
-                    console.log("Undirected and bidirected edges must have \"/\" in their weight!");
+                if(typeof(weight) === "number" || weight.indexOf("/") === -1) {
+                    alert("ERROR:\n\n" +
+                        "The weight of an undirected and a bidirected edge " +
+                        "must be two numbers separated using the '/' character, " +
+                        "such that the number to the left of '/' is the " +
+                        "weight of the outgoing edge, " +
+                        "and the number to the right of '/' is the " +
+                        "weight of the incoming edge.\n\n" +
+                        "For example, if the user adds an undirected or a " +
+                        "bidirected edge by selecting node 'a' first and " +
+                        "node 'b' second, " +
+                        "and changes the edge weight to \"3/6\", " +
+                        "then the edge from node 'a' to node 'b' will have weight 3, " +
+                        "and the edge from node 'b' to node 'a' will have weight 6.");
                     return -1;
                 }
 
@@ -86,9 +99,13 @@ class helperAlgs {
                 weight_second = parseInt(weight.slice(weight.indexOf("/") + 1));
             }
 
-            if (weight_first < 1 || isNaN(weight_first)) {
+            if(weight_first < 1 || isNaN(weight_first)) {
                 // ERROR!
-                console.log("First weight value is invalid!");
+                if(links[edge].type === "Directed") {
+                    alert("ERROR: Edge weight must be a positive integer!");
+                } else {
+                    alert("ERROR: Number before '/' must be a positive integer!");
+                }
                 return -1;
             }
 
@@ -118,9 +135,9 @@ class helperAlgs {
                 // from A to B with weight_first w AND a directed edge ...
                 // from B to A with weight_first w.
 
-                if (weight_second < 1 || isNaN(weight_second)) {
+                if(weight_second < 1 || isNaN(weight_second)) {
                     // ERROR!
-                    console.log("Second weight value is invalid!");
+                    alert("ERROR: Number after '/' must be a positive integer!");
                     return -1;
                 }
 
