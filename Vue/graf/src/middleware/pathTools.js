@@ -6,7 +6,7 @@ class PathTools {
     static algs = {
       "bfs": {"fun": helperAlgs.bfs, "type": "search"},
       "dijkstra": {"fun": helperAlgs.djikstra, "type": "shortestPath"},
-      "maxFlow": {"fun": helperAlgs.maxFlow, "type": "flow"}
+      "maxFlow": {"fun": helperAlgs.maxFlow, "type": "flow"},
       "dfs": {"fun": helperAlgs.dfs, "type": "search"},
       "bellmanford": {"fun": helperAlgs.bellmanford, "type": "shortestPath"},
       "scc": {"fun": helperAlgs.scc, "type": "shortestPath"}
