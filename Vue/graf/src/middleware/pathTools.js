@@ -3,7 +3,10 @@ import grafhelpers from '../middleware/helperFunctions';
 
 class PathTools {
 
-    static algs = {"bfs": {"fun": helperAlgs.bfs, "type": "search"}, "dijkstra": {"fun": helperAlgs.djikstra, "type": "shortestPath"}, "bellmanford": {"fun": helperAlgs.bellmanford, "type": "shortestPath"}};
+    static algs = {"bfs":         {"fun": helperAlgs.bfs, "type": "search"},
+                   "dijkstra":    {"fun": helperAlgs.djikstra, "type": "shortestPath"},
+                   "dfs":         {"fun": helperAlgs.dfs, "type": "search"},
+                   "bellmanford": {"fun": helperAlgs.bellmanford, "type": "shortestPath"}};
 
     algorithm(graf, selection, alg) {
         var data = PathTools.algs[alg]

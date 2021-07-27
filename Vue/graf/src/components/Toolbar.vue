@@ -7,7 +7,7 @@
         @click="onToolChange(tool)"
         :active="activeTool==tool"
       >
-				<sui-icon v-bind:name="icons[tool]"/>
+        <sui-icon v-bind:name="icons[tool]"/>
         <br>{{altTexts[tool]}}
 
         <sui-dropdown v-if="subMenus[tool]">
@@ -100,9 +100,11 @@ export default{
           "bidir" : "Bidirected"
         },
         "Algorithm" : {
-          "bfs" : "BFS Search",
+          "bfs" : "Breadth First Search (BFS)",
           "dijkstra" : "Dijkstra",
+          "dfs" : "Depth First Search (DFS)"
           "bellmanford": "Bellman Ford",
+
         }
       },
       subMenuActive: {
