@@ -102,9 +102,9 @@ export default{
         "Algorithm" : {
           "bfs" : "Breadth First Search (BFS)",
           "dijkstra" : "Dijkstra",
+          "maxFlow" : "Maximum Flow",
           "dfs" : "Depth First Search (DFS)"
           "bellmanford": "Bellman Ford",
-
         }
       },
       subMenuActive: {
