@@ -30,8 +30,6 @@ class helperAlgs {
 
     
     dfs(selectedNodes, links) {
-
-
         var data = grafhelpers.convertGrafData(links);
         var queue = new Array();
         var visited = new Map();
@@ -63,9 +61,6 @@ class helperAlgs {
         console.log(JSON.parse(JSON.stringify(data)));
 
         return visited;
-         
-
-
     }
 
     djikstra(selectedNodes, links) {
@@ -279,6 +274,128 @@ class helperAlgs {
         console.log(data);
 
         return [flow_graph, maxf]; // return multiple values as an array
+    }
+    
+    scc( selectedNodes, links ) {
+        //var data             = grafhelpers.convertGrafData(links);
+        var visited          = new Array();
+        var order            = new Map();
+        var queue            = new Array();
+        var components       = new Array();
+        var selectedBackward = new Array();
+        var component        = new Map();
+        var start = { node: selectedNodes[0].index, path:[{id: selectedNodes[0].index}] };
+        let i;
+
+        queue.push( start );
+
+        // make backwards array + boolean array
+        for ( i = 0; i < queue.length; i++ ) {
+
+            selectedBackward.push(queue[ queue.length - i - 1 ]);
+            visited.push( false );
+        }
+
+        for ( i = 0; i < visited.length; i++ ) {
+            if ( visited[i] == false ) {
+                order = topology_sort( selectedNodes, links, visited, i, order );
+            }
+        }
+
+        // reset
+        for ( i = 0; i < visited.length; i++ ) {
+            visited[i] = false;
+        }
+
+        for ( i = 0; i < order.length; i++ ) {
+            if ( visited[ i ] == false ) {
+                component = find_components( selectedBackward, links, visited, i, component );
+                components.push( component );
+            }
+        }
+
+        // this returns an array of graphs !!!
+        return components;
+    }
+    
+    topology_sort( selectedNodes, links, visit, start, map ) {
+        // modified dfs
+
+        var data    = grafhelpers.convertGrafData( links );
+        var queue   = new Array();
+        var visited = new Map();
+        var begin   = {node: selectedNodes[ start ].index, path:[{id: selectedNodes[ start ].index}]};
+
+        queue.push( begin );
+
+        visit[ start ] = true;
+
+        for ( let i = start; i < queue.length; i++ ) {
+
+            var state = queue.shift;
+
+            if ( !(visited.has(state.node)) ) {
+                var fringe = data[state.node];
+
+                fringe.forEach(fNode => {
+                    if ( !(visited.has(fNode)) ) {
+                        var next_path = JSON.parse(JSON.stringify(state.path));
+                        next_path.push({id: fNode});
+                        queue.push({node: fNode, path: next_path});
+                    }
+                });
+                visited.set(state.node, state.path);
+            }
+
+            if ( visit[ start ] == false ) {
+                map.unshift( {node: selectedNodes[i].index, path:[{id: selectedNodes[i].index}]} );
+                map = topology_sort( selectedNodes, links, visit, i, map );
+
+            }
+        }
+
+        map.push( begin );
+
+        return map;
+    }
+
+    find_components( selectedNodes, links, visit, start, map ) {
+        // modified backwards dfs
+
+        var data    = grafhelpers.convertGrafData( links );
+        var queue   = new Array();
+        var visited = new Map();
+        var begin = {node: selectedNodes[ start ].index, path:[{id: selectedNodes[ start ].index}]};
+
+        queue.push( begin );
+
+        visit[ start ] = true;
+        map.push( begin );
+
+        for ( let i = start; i < queue.length; i++ ) {
+
+            var state = queue.shift;
+
+            if ( !(visited.has(state.node)) ) {
+                var fringe = data[state.node];
+
+                fringe.forEach(fNode => {
+                    if ( !(visited.has(fNode)) ) {
+                        var next_path = JSON.parse(JSON.stringify(state.path));
+                        next_path.push({id: fNode});
+                        queue.push({node: fNode, path: next_path});
+                    }
+                });
+                visited.set(state.node, state.path);
+            }
+
+            if ( visit[ start ] == false ) {
+                map.push( {node: selectedNodes[i].index, path:[{id: selectedNodes[i].index}]} );
+                map = find_components( selectedNodes, links, visit, i, map );
+            }
+        }
+
+        return map;
     }
 }
 
