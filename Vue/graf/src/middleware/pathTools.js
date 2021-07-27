@@ -7,6 +7,8 @@ class PathTools {
       "bfs": {"fun": helperAlgs.bfs, "type": "search"},
       "dijkstra": {"fun": helperAlgs.djikstra, "type": "shortestPath"},
       "maxFlow": {"fun": helperAlgs.maxFlow, "type": "flow"}
+      "dfs": {"fun": helperAlgs.dfs, "type": "search"},
+      "bellmanford": {"fun": helperAlgs.bellmanford, "type": "shortestPath"}
     };
 
     algorithm(graf, selection, alg) {
