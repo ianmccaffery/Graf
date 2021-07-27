@@ -56,6 +56,43 @@ class helperAlgs {
             }
         }
     }
+    bellmanford(selectedNodes, links){
+        var data = grafhelpers.convertGrafData(links);
+        var queue = new Array();
+        var visited = [];
+        //var weight = links[edge].name;
+        var start = {node: selectedNodes[0].index, path:[{id: selectedNodes[0].index}]};
+        var distances = {};
+        var parents = {};
+        
+        queue.push(start);
+        
+        for(var i = 0; i < queue.length; i++){
+            distances[queue[i]] = Infinity;
+            parents[queue[i]] = null;
+        }
+        
+        while(queue.length > 0) {
+            var state = queue.shift();
+
+            if(state.node == selectedNodes[1].index) {
+                return state.path;
+            }
+
+            else if (!(visited.includes(state.node))) {
+                var fringe = data[state.node];
+                fringe.forEach(fNode => {
+                    if (!(visited.includes(fNode))) {
+                        var next_path = JSON.parse(JSON.stringify(state.path));
+                        next_path.push({id: fNode});
+                        queue.push({node: fNode, path: next_path});
+                    }
+                });
+                visited.push(state.node);
+            }
+        }
+
+    }
 
 }
 
