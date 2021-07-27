@@ -103,6 +103,8 @@ export default{
           "bfs" : "Breadth First Search (BFS)",
           "dijkstra" : "Dijkstra",
           "dfs" : "Depth First Search (DFS)"
+          "bellmanford": "Bellman Ford",
+
         }
       },
       subMenuActive: {
