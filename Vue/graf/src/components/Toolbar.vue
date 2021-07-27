@@ -103,8 +103,9 @@ export default{
           "bfs" : "Breadth First Search (BFS)",
           "dijkstra" : "Dijkstra",
           "maxFlow" : "Maximum Flow",
-          "dfs" : "Depth First Search (DFS)"
+          "dfs" : "Depth First Search (DFS)",
           "bellmanford": "Bellman Ford",
+          "scc": "Strongly Connected Components"
         }
       },
       subMenuActive: {
